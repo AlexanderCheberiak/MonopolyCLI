@@ -11,43 +11,87 @@ namespace MonopolyCLI.Game
         public string Name { get; set; }
         public int Money { get; set; }
         public int Position { get; set; }
-        public bool IsInJail { get; set; }
         public int JailTurns { get; set; }
         public Player(string name)
         {
             Name = name;
             Money = 15000;
             Position = 0;
-            IsInJail = false;
             JailTurns = 0;
+        }
+        public void ViewStats()
+        {
+            Console.WriteLine($"Player: {Name}");
+            Console.WriteLine($"Money: {Money}");
+            Console.WriteLine($"Position: {Position}");
+            if (JailTurns >= 1)
+            {
+                Console.WriteLine($"Turns remaining in Jail: {JailTurns}");
+            }
         }
         public void Move(int spaces)
         {
-            if (IsInJail)
+            if (JailTurns >= 1)
             {
                 Console.WriteLine($"{Name} is in jail and cannot move for {JailTurns} more turns.");
-                JailTurns--;
-                return;
+                Console.WriteLine("Would you like to throw dice('t') or pay 500('p') to leave Jail?");
+                string input = Console.ReadLine();
+                if (input.ToLower() == "t")
+                {
+                    int dice1 = Random.Shared.Next(1, 7);
+                    int dice2 = Random.Shared.Next(1, 7);
+                    if (dice1 == dice2)
+                    {
+                        Console.WriteLine($"You scored {dice1} and {dice2} so you get out of prison!");
+                        this.JailTurns = 0;
+                        this.Move(Random.Shared.Next(1, 13));
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Dices are {dice1} and {dice2}, so you stay in prison!");
+                    }
+                    return;
+                }
+                else if (input.ToLower() == "p")
+                {
+                    if (Money >= 500)
+                    {
+                        Money -= 500;
+                        JailTurns = 0;
+                        Console.WriteLine($"{Name} has paid 500 to leave jail.");
+                        this.Move(Random.Shared.Next(1, 13));
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{Name} does not have enough money to pay the fine.");
+                    }
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please try again.");
+                    return;
+                }
             }
-            if (Position + spaces >= 40)
-            {
-                Money += 2000;
-            }
-            Position = (Position + spaces) % 40;
-            if (Position == 30)
-            {
-                Position = 10;
-                IsInJail = true;
-                JailTurns = 2;
-                Console.WriteLine($"{Name} has landed on Go to Jail and is now in jail for {JailTurns} turns.");
-            }
-            if (new[] { 2, 7, 17, 22, 33, 38 }.Contains(Position))
-            {
-                Console.WriteLine($"{Name} landed on a Chance space and will draw a Chance card.");
-                Chance chance = new Chance();
-                chance.DrawCard(this);
-            }
-            Console.WriteLine($"{Name} moved to position {Position}.");
+                if (Position + spaces >= 40)
+                {
+                    Money += 2000;
+                }
+                Position = (Position + spaces) % 40;
+                if (Position == 30)
+                {
+                    Position = 10;
+                    JailTurns = 2;
+                    Console.WriteLine($"{Name} has landed on Go to Jail and is now in jail for {JailTurns} turns.");
+                }
+                if (new[] { 2, 7, 17, 22, 33, 38 }.Contains(Position))
+                {
+                    Console.WriteLine($"{Name} landed on a Chance space and will draw a Chance card.");
+                    Chance chance = new Chance();
+                    chance.DrawCard(this);
+                }
+                Console.WriteLine($"{Name} moved to position {Position}.");
+
             
         }
     }

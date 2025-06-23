@@ -49,14 +49,12 @@ namespace MonopolyCLI.Game
             else if (chanceCardType == ChanceCardType.GoToJail)
             {
                 Console.WriteLine("You drew a Chance card: Go to Jail! You are now in jail.");
-                player.IsInJail = true;
                 player.Position = 10; 
                 player.JailTurns = 2;
             }
             else if (chanceCardType == ChanceCardType.SkipTurn)
             {
                 Console.WriteLine("You drew a Chance card: Skip Turn! You will skip your next turn.");
-                player.IsInJail = true;
                 player.JailTurns = 1;
             }
         }
