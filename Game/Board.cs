@@ -1,4 +1,6 @@
-﻿namespace Monopoly.Game
+﻿using MonopolyCLI.Game;
+
+namespace MonopolyCLI.Game
 {
     public class Board
     {
@@ -48,6 +50,14 @@
                 new Field(FieldType.Chance, MonopolyType.None, "Chance", 0, 0, new int[] { 0 }),
                 new Field(FieldType.Property, MonopolyType.Phones, "Samsung", 4000, 2000, new int[] { 500, 2000, 6000, 14000, 17000, 20000 }),
             };
+        }
+        public Player CheckOwner(int position)
+        {
+            if (Fields[position].IsOwned)
+            {
+                return Fields[position].Owner;
+            }
+            return null;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Monopoly.Game
+﻿using MonopolyCLI.Game;
+
+namespace MonopolyCLI.Game
 {
     public class Field
     {
@@ -8,6 +10,7 @@
         public int Price { get; set; }
         public int[] Rent { get; set; }
         public bool IsOwned { get; set; }
+        public Player Owner { get; set; } = null;
         public int Houses { get; set; } = 0;
         public int HouseCost { get; set; }
         public int MortgageSum { get; set; }
