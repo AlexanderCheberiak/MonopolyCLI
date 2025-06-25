@@ -15,13 +15,13 @@ namespace MonopolyCLI.Game
         public int JailTurns { get; set; }
         private Board board;
 
-        public Player(string name, Board gameBoard) // Updated constructor to accept a Board instance  
+        public Player(string name, Board gameBoard) 
         {
             Name = name;
             Money = 15000;
             Position = 0;
             JailTurns = 0;
-            board = gameBoard; // Initialize the Board instance  
+            board = gameBoard; 
         }
 
         public void ViewStats()
@@ -118,9 +118,7 @@ namespace MonopolyCLI.Game
                 {
                     if (this.Money >= board.Fields[Position].Price)
                     {
-                        this.Money -= board.Fields[Position].Price;
-                        board.Fields[Position].Owner = this;
-                        Console.WriteLine($"{Name} has successfully bought {board.Fields[Position].Name}!");
+                        board.BuyField(Position, this);
                     }
                     else
                     {

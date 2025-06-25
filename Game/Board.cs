@@ -59,5 +59,25 @@ namespace MonopolyCLI.Game
             }
             return null;
         }
+        public void BuyField(int position, Player player)
+        {
+            if (Fields[position].IsOwned)
+            {
+                Console.WriteLine($"{Fields[position].Name} is already owned by {Fields[position].Owner.Name}.");
+                return;
+            }
+            if (player.Money >= Fields[position].Price)
+            {
+                player.Money -= Fields[position].Price;
+                Fields[position].Owner = player;
+                Fields[position].IsOwned = true;
+                Console.WriteLine($"{player.Name} has successfully bought {Fields[position].Name} for {Fields[position].Price}!");
+            }
+            else
+            {
+                Console.WriteLine($"{player.Name} does not have enough money to buy {Fields[position].Name}!");
+            }
+        }
+
     }
 }
